@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import { useMutation } from "@tanstack/react-query"
 import { authApi } from "@/services/apis"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -25,7 +25,13 @@ export default function LoginPage() {
       navigate("/dashboard")
     },
     onError: (err: any) => {
-      setError(err.response?.data?.message || "Invalid email or password")
+      const msg =
+        err.response?.data?.message ||
+        err.response?.data?.error ||
+        (err.code === "ERR_NETWORK"
+          ? "Cannot connect to the server. Please check your internet and try again."
+          : "Invalid email or password")
+      setError(msg)
     },
   })
 
@@ -84,6 +90,24 @@ export default function LoginPage() {
         <CardFooter className="flex flex-col gap-2 text-center">
           <p className="text-sm text-muted-foreground">
             Default credentials: admin@curamoney.com / admin123
+          </p>
+          <p className="text-sm">
+            Don't have an account?{" "}
+            <Link
+              to="/register"
+              className="text-primary font-medium underline-offset-4 hover:underline"
+            >
+              Sign up
+            </Link>
+          </p>
+          <p className="text-sm">
+            Forgot your password?{" "}
+            <Link
+              to="/forgot-password"
+              className="text-primary font-medium underline-offset-4 hover:underline"
+            >
+              Reset with OTP
+            </Link>
           </p>
         </CardFooter>
       </Card>

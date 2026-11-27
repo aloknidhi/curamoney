@@ -2,6 +2,7 @@ import { Router } from "express"
 import { authenticate, authorize } from "../middleware/auth"
 import { validate } from "../middleware/validate"
 import * as authController from "../controllers/auth.controller"
+import * as otpController from "../controllers/otp.controller"
 import * as customerController from "../controllers/customer.controller"
 import * as orderController from "../controllers/order.controller"
 import * as processingController from "../controllers/processing.controller"
@@ -11,6 +12,7 @@ import * as expenseController from "../controllers/expense.controller"
 import * as reportController from "../controllers/report.controller"
 import * as settingController from "../controllers/setting.controller"
 import * as authValidators from "../validators/auth"
+import * as otpValidators from "../validators/otp"
 import * as customerValidators from "../validators/customers"
 import * as orderValidators from "../validators/orders"
 import * as processingValidators from "../validators/processing"
@@ -32,6 +34,13 @@ router.post("/auth/register", validate(authValidators.registerSchema, "body"), a
 router.post("/auth/forgot-password", validate(authValidators.forgotPasswordSchema, "body"), authController.forgotPassword)
 router.post("/auth/reset-password", validate(authValidators.resetPasswordSchema, "body"), authController.resetPassword)
 router.post("/auth/change-password", authenticate, validate(authValidators.changePasswordSchema, "body"), authController.changePassword)
+
+// OTP
+router.post("/auth/send-otp", validate(otpValidators.sendOtpSchema, "body"), otpController.sendOtp)
+router.post("/auth/verify-otp", validate(otpValidators.verifyOtpSchema, "body"), otpController.verifyOtp)
+router.post("/auth/signup", validate(otpValidators.signupSchema, "body"), otpController.signup)
+router.post("/auth/forgot-password-otp", validate(otpValidators.forgotPasswordSchema, "body"), otpController.forgotPassword)
+router.post("/auth/reset-password-otp", validate(otpValidators.resetPasswordSchema, "body"), otpController.resetPassword)
 
 // Customers
 router.get("/customers", authenticate, customerController.listCustomers)

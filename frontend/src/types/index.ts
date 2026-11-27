@@ -203,6 +203,43 @@ export interface RegisterRequest {
   roleId: number
 }
 
+export interface SendOtpRequest {
+  email?: string
+  mobile?: string
+  purpose?: "SIGNUP" | "LOGIN" | "FORGOT_PASSWORD"
+}
+
+export interface SendOtpResponse {
+  identifier: string
+  expiresIn: number
+}
+
+export interface VerifyOtpRequest {
+  email?: string
+  mobile?: string
+  otp: string
+  purpose?: "SIGNUP" | "LOGIN" | "FORGOT_PASSWORD"
+}
+
+export interface SignupRequest {
+  email: string
+  password: string
+  name: string
+  mobile?: string
+  otp: string
+  roleId?: number
+}
+
+export interface ForgotPasswordRequest {
+  email: string
+}
+
+export interface ResetPasswordRequest {
+  email: string
+  otp: string
+  newPassword: string
+}
+
 export interface AuthContextType {
   user: User | null
   token: string | null

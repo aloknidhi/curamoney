@@ -4,6 +4,9 @@ import { useAuth } from "@/contexts/AuthContext"
 import { AuthProvider } from "@/contexts/AuthContext"
 import { Toaster } from "sonner"
 import LoginPage from "@/pages/LoginPage"
+import RegisterPage from "@/pages/RegisterPage"
+import OtpVerifyPage from "@/pages/OtpVerifyPage"
+import ForgotPasswordPage from "@/pages/ForgotPasswordPage"
 import DashboardLayout from "@/components/layout/DashboardLayout"
 import DashboardPage from "@/pages/DashboardPage"
 import CustomersPage from "@/pages/CustomersPage"
@@ -39,6 +42,9 @@ function App() {
         <Toaster />
           <Routes>
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/otp-verify" element={<OtpVerifyPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route
               path="/"
               element={

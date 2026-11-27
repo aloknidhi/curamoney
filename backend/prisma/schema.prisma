@@ -443,3 +443,23 @@ model AuditLog {
   @@index([createdAt])
   @@map("audit_logs")
 }
+
+// ---------------------------------------------------------------------------
+// OTP tokens (email/mobile verification, signup, password reset)
+// ---------------------------------------------------------------------------
+model OtpToken {
+  id        String   @id @default(cuid())
+  email     String?
+  mobile    String?
+  otp       String   // 6-digit code
+  purpose   String   // SIGNUP, LOGIN, FORGOT_PASSWORD
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([email])
+  @@index([mobile])
+  @@index([purpose])
+  @@index([expiresAt])
+  @@map("otp_tokens")
+}

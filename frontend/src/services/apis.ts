@@ -1,6 +1,12 @@
 import { api, PaginatedResponse } from "@/services/api"
 import type { Customer, Order, ProcessingRecord, WeighmentRecord, Payment, Delivery, ExpenseCategory, Expense, BusinessSetting, DashboardStats, CreateOrderInput,   CreatePaymentInput,
   LoginResponse,
+  SendOtpRequest,
+  SendOtpResponse,
+  VerifyOtpRequest,
+  SignupRequest,
+  ForgotPasswordRequest,
+  ResetPasswordRequest,
 } from "@/types"
 
 // Customers
@@ -98,4 +104,9 @@ export const authApi = {
   login: (data: { email: string; password: string }) => api.post<{ data: LoginResponse }>("/auth/login", data),
   me: () => api.get<{ data: { user: any } }>("/auth/me"),
   logout: () => api.post("/auth/logout"),
+  sendOtp: (data: SendOtpRequest) => api.post<{ data: SendOtpResponse }>("/auth/send-otp", data),
+  verifyOtp: (data: VerifyOtpRequest) => api.post<{ data: { verified: boolean } }>("/auth/verify-otp", data),
+  signup: (data: SignupRequest) => api.post<{ data: LoginResponse }>("/auth/signup", data),
+  forgotPassword: (data: ForgotPasswordRequest) => api.post<{ data: { message: string } }>("/auth/forgot-password-otp", data),
+  resetPassword: (data: ResetPasswordRequest) => api.post<{ data: { message: string } }>("/auth/reset-password-otp", data),
 }
