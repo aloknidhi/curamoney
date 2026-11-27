@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: curamoney-backend
+    env: node
+    plan: free
+    region: oregon
+    buildCommand: bash render-build.sh
+    startCommand: PORT=$PORT node dist/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 8002
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: FRONTEND_URL
+        sync: false

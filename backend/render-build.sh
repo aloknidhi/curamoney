@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 # CuraMoney backend build script for Render
-# Run as: bash render-build.sh  (or ./render-build.sh)
-set -e
+set -euo pipefail
 
 echo "=== Installing dependencies ==="
 npm install
 
 echo "=== Building TypeScript ==="
-npm run build
+npx tsc
 
 echo "=== Generating Prisma Client ==="
 npx prisma generate
