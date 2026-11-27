@@ -17,10 +17,12 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Loader2 } from "lucide-react"
 import { Send } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 
 type Step = "send" | "verify" | "done"
 
 export default function OtpVerifyPage() {
+  const navigate = useNavigate()
   const [step, setStep] = useState<Step>("send")
   const [email, setEmail] = useState("")
   const [otp, setOtp] = useState("")
@@ -43,6 +45,7 @@ export default function OtpVerifyPage() {
     onSuccess: () => {
       setSuccess("OTP verified successfully.")
       setStep("done")
+      setTimeout(() => navigate("/login"), 1500)
     },
     onError: (err: any) => {
       setError(err.response?.data?.message || "Invalid or expired OTP")
@@ -141,7 +144,7 @@ export default function OtpVerifyPage() {
               </div>
               <h3 className="mt-4 text-sm font-semibold">Verified</h3>
               <p className="mt-1 text-sm text-muted-foreground">
-                Redirecting to dashboard...
+                Redirecting to sign in...
               </p>
             </div>
           )}

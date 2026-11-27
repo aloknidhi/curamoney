@@ -2,7 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { useAuth } from "@/contexts/AuthContext"
-import { customerApi, orderApi, processingApi, paymentApi, deliveryApi, expenseApi, settingApi, reportApi, authApi } from "@/services/apis"
+import { customerApi, orderApi, processingApi, paymentApi, deliveryApi, expenseApi, settingApi, reportApi } from "@/services/apis"
 import type { Customer, CreateOrderInput, CreatePaymentInput } from "@/types"
 
 // Customer hooks
@@ -220,13 +220,9 @@ export function useExpenseReport(params?: { startDate?: string; endDate?: string
 
 // Auth hooks
 export function useLogin() {
-  useAuth();
+  const { login } = useAuth();
   return useMutation({
-    mutationFn: (data: { email: string; password: string }) => authApi.login(data),
-    onSuccess: (response) => {
-      const { user, token } = response.data.data
-      localStorage.setItem("token", token)
-      localStorage.setItem("user", JSON.stringify(user))
-    },
-  })
+    mutationFn: ({ email, password }: { email: string; password: string }) =>
+      login(email, password),
+  });
 }

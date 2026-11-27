@@ -1,6 +1,7 @@
 "use client"
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react"
+import { useNavigate } from "react-router-dom"
 import { api } from "@/services/api"
 import type { AuthContextType, User, LoginResponse } from "@/types"
 
@@ -10,6 +11,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [token, setToken] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token")
@@ -21,6 +23,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(false)
   }, [])
 
+  const setSession = useCallback((userData: User, tokenStr: string) => {
+    setUser(userData)
+    setToken(tokenStr)
+    localStorage.setItem("token", tokenStr)
+    localStorage.setItem("user", JSON.stringify(userData))
+  }, [])
+
   const login = useCallback(async (email: string, password: string) => {
     const response = await api.post<LoginResponse>("/auth/login", { email, password })
     const { user, token } = response.data
@@ -28,6 +37,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setToken(token)
     localStorage.setItem("token", token)
     localStorage.setItem("user", JSON.stringify(user))
+    navigate("/dashboard")
   }, [])
 
   const logout = useCallback(() => {
@@ -43,6 +53,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     token,
     login,
     logout,
+    setSession,
     isAuthenticated: !!token,
     isLoading,
   }

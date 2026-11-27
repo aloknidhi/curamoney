@@ -245,6 +245,7 @@ export interface AuthContextType {
   token: string | null
   login: (email: string, password: string) => Promise<void>
   logout: () => void
+  setSession: (user: User, token: string) => void
   isAuthenticated: boolean
   isLoading: boolean
 }

@@ -17,11 +17,13 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Loader2 } from "lucide-react"
 import { Send, Mail, Phone } from "lucide-react"
+import { useAuth } from "@/contexts/AuthContext"
 
 type Step = "email" | "otp" | "done"
 
 export default function RegisterPage() {
   const navigate = useNavigate()
+  const { setSession } = useAuth()
   const [step, setStep] = useState<Step>("email")
   const [email, setEmail] = useState("")
   const [name, setName] = useState("")
@@ -49,8 +51,7 @@ export default function RegisterPage() {
       authApi.signup({ email, password, name, mobile, otp }),
     onSuccess: (response) => {
       const { user, token } = response.data.data
-      localStorage.setItem("token", token)
-      localStorage.setItem("user", JSON.stringify(user))
+      setSession(user, token)
       navigate("/dashboard")
     },
     onError: (err: any) => {

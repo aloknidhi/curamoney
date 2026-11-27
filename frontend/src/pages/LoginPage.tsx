@@ -3,25 +3,23 @@
 import { useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
 import { useMutation } from "@tanstack/react-query"
-import { authApi } from "@/services/apis"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Loader2 } from "lucide-react"
+import { useAuth } from "@/contexts/AuthContext"
 
 export default function LoginPage() {
   const navigate = useNavigate()
+  const { login } = useAuth()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
 
   const mutation = useMutation({
-    mutationFn: (data: { email: string; password: string }) => authApi.login(data),
-    onSuccess: (response) => {
-      const { user, token } = response.data.data
-      localStorage.setItem("token", token)
-      localStorage.setItem("user", JSON.stringify(user))
+    mutationFn: ({ email, password }: { email: string; password: string }) => login(email, password),
+    onSuccess: () => {
       navigate("/dashboard")
     },
     onError: (err: any) => {
